@@ -20,16 +20,15 @@ async function sendData() {
                 console.log(json);
 
                 weather = json.weather.main;
-                air = json.airQuality.results[0].measurements[1];
-
                 document.getElementById("summary").textContent = weather.feels_like;
                 document.getElementById("temp").textContent = weather.temp;
+                
+                air = json.airQuality.results[0].measurements[1];
                 document.getElementById("aq_parameter").textContent = air.parameter;
                 document.getElementById("aq_value").textContent = air.value;
                 document.getElementById("aq_units").textContent = air.unit;
                 document.getElementById("aq_date").textContent = air.lastUpdated;
             } catch (err) {
-                console.log(err);
                 air = {value: -1};
             }
 

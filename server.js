@@ -17,7 +17,8 @@ const Datastore = require('nedb');
 require("dotenv").config();
 
 const app = express();
-app.listen(3000, () => console.log("Listening at 3000"));
+const port = process.env.PORT || 3000;
+app.listen(port, () => console.log("Listening at " + port));
 app.use(express.static('public'));
 app.use(express.json({ limit: "1mb" }));
 
@@ -60,9 +61,14 @@ app.get('/weather/:latlon', async (request, response) => {
 
     const weaherResponse = await fetch(weather_APIurl);
     const weatherData = await weaherResponse.json();
+    let openaqData;
 
-    const openaqResponse = await fetch(openaq_APIurl).catch(err => console.log(err));
-    const openaqData = await openaqResponse.json().catch(err => console.log(err));
+    try {
+        const openaqResponse = await fetch(openaq_APIurl).catch();
+        openaqData = await openaqResponse.json();
+    } catch (err){
+        openaqData = "Error in getting data"
+    }
 
     const data = {
         weather: weatherData,
